@@ -19,13 +19,31 @@ Print a message:
 "<telephone number> spent the longest time, <total time> seconds, on the phone during 
 September 2016.".
 """
+
+# Create dictionary, where the phone number is the key and the duration is call minutes total
+call_tallies = {}
+
+# Iterate through the call list and add call length to the dict entry of the sender and receiver
+for call in calls:
+    current_call_time = call[3]
+    if call[0] in call_tallies:
+        call_tallies[call[0]] += int(current_call_time)
+    else:
+        call_tallies[call[0]] = int(current_call_time)
+
+    if call[1] in call_tallies:
+        call_tallies[call[1]] += int(current_call_time)
+    else:
+        call_tallies[call[1]] = int(current_call_time)
+
+
+# Iterate through the dictionary and identify the max time, return the stats
 current_max_number = ""
 current_max_time = 0
 
-for call in calls:
-    if int(call[3]) > current_max_time:
-        current_max_number = call[0]
-        current_max_time = int(call[3])
+for current_num, current_time in call_tallies.items():
+    if current_time > current_max_time:
+        current_max_number, current_max_time = current_num, current_time
 
 print ("{} spent the longest time, {} seconds, on the phone during September 2016.".\
        format(current_max_number,current_max_time))
