@@ -1,2 +1,121 @@
 Task 0:
+    Assumptions:
+        Ignoring the opening and reading of call and text files.
 
+    Analysis:
+        Lines 23-30 are all assigning values to variable and reading values from the txt files based on their exact index. Each of these is 0(1).
+
+        Lines 32-35 are just printing those variable. This is also each 0(1).
+
+        Since all of these statements are sequential, we add the complexities. The sum is O(10), but the integer value does not matter in the long term, so O(1) is a fair answer.
+
+Task 1:
+
+    Assumptions:
+        Ignoring the opening and reading of call and text files.
+
+        Length of the text and call files is negligible. Both assumed to be of length N for simplicity.
+
+    Analysis:
+        The main data structure used for this algorithm is the dictionary.
+
+        A for loop is used to iterate through the text and call files each.
+
+        Lines 23-24 iterate through the text file. We add every phone number to the dictionary as the key and as the value. Keys are unique for dictionaries, so if a number is already in the dicionary it won't be duplicated.
+
+        Same for the lines 26- 27.
+
+        Each for loop is O(N) * O(1), which is just O(N).
+
+        Since there are two for loops that are the same it is O(2N), which is O(N).
+
+Task 2:
+
+    Assumptions:
+    ------------------------------------------------------------------------------------
+    Analysis: O(N^2); see below.
+    ------------------------------------------------------------------------------------
+
+    call_tallies = {} ------------------------------------------- O(1)
+
+    for call in calls:  ----------------------------------------- O(N)
+        current_call_time = call[3] ----------------------------- O(1)
+        if call[0] in call_tallies: ----------------------------- O(N)
+            call_tallies[call[0]] += int(current_call_time) ----- O(1)
+        else:
+            call_tallies[call[0]] = int(current_call_time) ------ O(1)
+
+        if call[1] in call_tallies: ----------------------------- O(N)
+            call_tallies[call[1]] += int(current_call_time) ----- O(1)
+        else:
+            call_tallies[call[1]] = int(current_call_time) ------ O(1)
+
+    current_max_number = "" ------------------------------------- O(1)
+    current_max_time = 0 ---------------------------------------- O(1)
+
+    for current_num, current_time in call_tallies.items(): ------------------------ O(N)
+        if current_time > current_max_time: --------------------------------------- O(1)
+            current_max_number, current_max_time = current_num, current_time ------ O(1)
+
+
+Task 3:
+
+    Assumptions:
+    ------------------------------------------------------------------------------------
+    Analysis:
+    ------------------------------------------------------------------------------------
+
+    codes_for_target_receiving_calls = {} ----------------------------------------- O(1)
+    total_call_from_bangladore = 0 ------------------------------------------------ O(1)
+    total_calls_to_bangladore = 0 ------------------------------------------------- O(1)
+
+    for call in calls: ------------------------------------------------------------ O(N)
+       if call[0][:5] == "(080)": ------------------------------------------------- O(1)
+           total_call_from_bangladore += 1 ---------------------------------------- O(1)
+           receiving_num = call[1] ------------------------------------------------ O(1)
+           if "(" in receiving_num: ----------------------------------------------- O(N)
+               new_num = "" ------------------------------------------------------- O(1)
+               i = 1 -------------------------------------------------------------- O(1)
+               while receiving_num[i] != ")": ------------------------------------- O(N)
+                   new_num = new_num + (receiving_num[i]) ------------------------- O(1)
+                   i += 1 --------------------------------------------------------- O(1)
+               if new_num == "080": ----------------------------------------------- O(N)
+                   total_calls_to_bangladore += 1 --------------------------------- O(1)
+               codes_for_target_receiving_calls[str(new_num)] = None -------------- O(1)
+           elif " " in receiving_num: --------------------------------------------- O(N)
+               codes_for_target_receiving_calls[str(receiving_num[0:4])] = None --- O(1)
+           else:
+               pass --------------------------------------------------------------- O(1)
+
+    code_list = [k for k in codes_for_target_receiving_calls] --------------------- O(N)
+
+    code_list.sort() -------------------------------------------------------------- O(N Log N)
+
+Task 4:
+
+    send_calls = {} ---------------------------------------- O(1)
+    receiving_calls = [] ----------------------------------- O(1)
+    send_texts = [] ---------------------------------------- O(1)
+    receiving_texts = [] ----------------------------------- O(1)
+    for call in calls: ------------------------------------- O(N)
+       send_calls[call[0]] = None -------------------------- O(1)
+       receiving_calls.append(call[1]) --------------------- O(1)
+
+    for text in texts: ------------------------------------- O(N)
+       send_texts.append(text[0]) -------------------------- O(1)
+       receiving_texts.append(text[1]) --------------------- O(1)
+
+    for call in receiving_calls: --------------------------- O(N)
+       if call in send_calls: ------------------------------ O(N)
+           del send_calls[call] ---------------------------- O(1)
+
+    for text in send_texts: -------------------------------- O(N)
+       if text in send_calls: ------------------------------ O(N)
+           del send_calls[text] ---------------------------- O(1)
+
+    for text in receiving_texts: --------------------------- O(N)
+       if text in send_calls: ------------------------------ O(N)
+           del send_calls[text] ---------------------------- O(1)
+
+    send_call_converted = [k for k in send_calls] ---------- O(N)
+    send_call_converted.sort() ----------------------------- O(N Log N)

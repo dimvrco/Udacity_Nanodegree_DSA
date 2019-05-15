@@ -21,10 +21,10 @@ Print a message:
 records = {}
 
 for text in texts:
-    records[text[0]] = ""
+    records[text[0]] = None
 
 for call in calls:
-    records[call[0]] = ""
+    records[call[0]] = None
 
 length_of_records = len(records)
 
